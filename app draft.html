@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack - Unified Application</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Styles */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color: #0f1724;
+            background: linear-gradient(180deg, #fbfdff 0%, #f5f7fb 100%);
+            -webkit-font-smoothing: antialiased
+        }
+
+        .full-screen-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f4f4f4;
+            margin: 0;
+        }
+
+        /* --- System Logo Styles --- */
+        .font-cursive {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .wavy-background {
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .wave {
+            position: absolute;
+            width: 100%;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0.8;
+            animation: wave-animation 25s cubic-bezier(0.5, 0.2, 0.5, 0.8) infinite alternate;
+            z-index: 0;
+        }
+
+        .wave-bottom {
+            bottom: 0;
+            border-radius: 50% / 100px 100px 0 0;
+        }
+
+        .wave-1 {
+            background: rgba(255, 99, 132, 0.2);
+            animation-duration: 30s;
+            bottom: -20px;
+        }
+
+        .wave-2 {
+            background: rgba(54, 162, 235, 0.2);
+            animation-duration: 25s;
+            bottom: -40px;
+        }
+
+        .wave-3 {
+            background: rgba(255, 206, 86, 0.2);
+            animation-duration: 40s;
+            bottom: -60px;
+        }
+
+        .wave-top {
+            top: 0;
+            border-radius: 0 0 50% / 100px 100px;
+            transform-origin: top;
+        }
+
+        .wave-top-1 {
+            background: rgba(100, 255, 100, 0.2);
+            animation-duration: 35s;
+            top: -20px;
+        }
+
+        .wave-top-2 {
+            background: rgba(160, 90, 200, 0.2);
+            animation-duration: 28s;
+            top: -40px;
+        }
+
+        .wave-top-3 {
+            background: rgba(255, 165, 0, 0.2);
+            animation-duration: 45s;
+            top: -60px;
+        }
+
+        @keyframes wave-animation {
+            from {
+                transform: translateX(0) scaleY(1);
+            }
+            to {
+                transform: translateX(-50%) scaleY(1.2);
+            }
+        }
+
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1f6fe5 0%, #308cfc 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(48, 140, 252, 0.4);
+            transition: transform 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+        .logo-circle:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateX(-4px);
+        }
+
+        .t-adjust {
+            display: inline-block;
+            transform: translateY(5px);
+        }
+
+        /* --- Login/Sign Up Form Styles --- */
+        .login-form-style {
+            background: #7ab2df;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+            width: 320px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .signup-form-style {
+            background: #abc3e2;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+            width: 320px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .form-input-style {
+            display: block;
+            width: 100%;
+            margin: 8px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .login-btn-style {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 0;
+            border-radius: 5px;
+            background: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .signup-btn-style {
+            display: block;
+            width: 100%;
+            margin: 12px 0;
+            padding: 10px;
+            border: 0;
+            border-radius: 5px;
+            background: #28a745;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-to-login-btn {
+            display: block;
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px;
+            border: 0;
+            border-radius: 5px;
+            background: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+
+        /* --- System Function Styles (Calendar) --- */
+        :root {
+            --bg: #f6f7fb;
+            --card: #ffffff;
+            --accent: #7c5cff;
+            --muted: #9aa4b2;
+            --shadow: 0 10px 30px rgba(20, 20, 50, 0.06);
+            --cell-height: 68px;
+            --time-col: 88px;
+            --radius: 14px;
+        }
+
+        .app {
+            height: 100vh;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            padding: 22px;
+            box-sizing: border-box;
+            background: linear-gradient(180deg, #fbfdff 0%, #f5f7fb 100%);
+            /* Ensure the app container takes up the full screen */
+        }
+
+        .left-toggle {
+            position: fixed;
+            left: 18px;
+            top: 18px;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--card);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(12, 16, 30, 0.04)
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 18px;
+            top: 82px;
+            width: 260px;
+            background: linear-gradient(180deg, #fff, #fbfdff);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 12px;
+            display: none;
+            z-index: 88;
+        }
+
+        .sidebar.visible {
+            display: block
+        }
+
+        .sidebar header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0f2f7
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .sidebar .item {
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 8px;
+            cursor: pointer
+        }
+
+        .sidebar .item:hover {
+            background: #f4f6fb
+        }
+
+        .card {
+            margin: 0 auto;
+            width: calc(100% - 120px);
+            max-width: 1200px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 14px;
+            border: 1px solid rgba(124, 92, 255, 0.06);
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f7f2ff, #eef8ff);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: #4a357f;
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 16px
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .mini-btn {
+            background: #fff;
+            border: 1px solid #eef2f7;
+            padding: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            /* CENTERED CONTENT */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .new-schedule-btn {
+            background: var(--accent);
+            color: white;
+            font-weight: 700;
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(124, 92, 255, 0.2);
+            transition: transform 0.1s ease-out;
+        }
+
+        .new-schedule-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(124, 92, 255, 0.25);
+        }
+
+        .export-btn {
+            background: var(--card);
+            border: 1px solid rgba(124, 92, 255, 0.12);
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            box-shadow: 0 6px 16px rgba(124, 92, 255, 0.06);
+        }
+
+        .week-header {
+            display: flex;
+            margin-left: var(--time-col);
+            gap: 1px;
+            user-select: none;
+            margin-bottom: 8px;
+        }
+
+        .day {
+            flex: 1;
+            text-align: center;
+            padding: 10px 6px;
+            font-weight: 600;
+            color: var(--muted);
+            background: transparent;
+        }
+
+        .grid-wrap {
+            display: flex;
+            gap: 1px;
+            background: transparent;
+            border-radius: 10px;
+            overflow: auto
+        }
+
+        .time-col {
+            width: var(--time-col);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .time-cell {
+            height: var(--cell-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 13px;
+            background: linear-gradient(180deg, #fff, #fbfdff)
+        }
+
+        .grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1px;
+            background: transparent;
+            min-width: 720px;
+            padding: 6px;
+        }
+
+        .grid .slot {
+            min-height: var(--cell-height);
+            background: linear-gradient(180deg, #fff, #fbfdff);
+            border-radius: 8px;
+            position: relative;
+            overflow: visible;
+            box-shadow: 0 0 0 1px rgba(10, 12, 30, 0.03) inset;
+            cursor: crosshair;
+        }
+
+        .event {
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            border-radius: 10px;
+            padding: 8px 10px;
+            color: #0f1724;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(20, 20, 50, 0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            cursor: grab;
+            transform-origin: left top;
+            user-select: none;
+        }
+
+        .event:active {
+            cursor: grabbing
+        }
+
+        .event .time {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.9
+        }
+
+        .event .title {
+            font-size: 14px
+        }
+
+        .event .handle {
+            position: absolute;
+            left: 6px;
+            right: 6px;
+            height: 8px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.08);
+            display: block;
+            cursor: ns-resize
+        }
+
+        .handle.top {
+            top: 6px
+        }
+
+        .handle.bottom {
+            bottom: 6px
+        }
+
+        .c1 {
+            background: linear-gradient(180deg, #e9d8ff, #d7c1ff)
+        }
+
+        .c2 {
+            background: linear-gradient(180deg, #dff7e6, #bfeccf)
+        }
+
+        .c3 {
+            background: linear-gradient(180deg, #d7f0ff, #bfe6ff)
+        }
+
+        .c4 {
+            background: linear-gradient(180deg, #ffe9f0, #ffd8ea)
+        }
+
+        .c5 {
+            background: linear-gradient(180deg, #fff6d9, #fff0b8)
+        }
+
+        .backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 10, 20, 0.28);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100
+        }
+
+        .backdrop.show {
+            display: flex
+        }
+
+        .modal {
+            width: 420px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow)
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px
+        }
+
+        .field label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        .field input,
+        .field select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eef2f7;
+            font-size: 14px
+        }
+
+        .export-menu {
+            position: absolute;
+            top: 86px;
+            right: 36px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+            flex-direction: column;
+            width: 200px;
+            z-index: 110;
+            border: 1px solid #eef2f7
+        }
+
+        .export-menu.visible {
+            display: flex
+        }
+
+        .export-menu button {
+            border: none;
+            background: transparent;
+            padding: 12px 14px;
+            text-align: left;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f9
+        }
+
+        .export-menu button:last-child {
+            border-bottom: none
+        }
+
+        .export-menu button:hover {
+            background: #faf7ff
+        }
+
+        @media (max-width:900px) {
+            .card {
+                width: 98%
+            }
+            .grid {
+                min-width: 620px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app-container">
+        </div>
+
+    <div class="backdrop" id="alertModalBackdrop" aria-hidden="true">
+        <div class="modal" style="width:300px">
+            <h4 id="alertTitle" style="margin-top:0"></h4>
+            <p id="alertMessage"></p>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+                <button class="mini-btn" id="alertBtnCancel" style="display:none">Cancel</button>
+                <button class="mini-btn" id="alertBtnConfirm" style="background:var(--accent);color:white;border:none">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="backdrop" id="modalBackdrop" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <h3 id="modalTitle">Add / Edit Event</h3>
+            <div class="field"><label>Title</label><input id="evtTitle" placeholder="Event title (e.g. Team meeting)"></div>
+
+            <div class="field" style="display:flex;gap:8px">
+                <div style="flex:1"><label>Day</label><select id="evtDay"><option value="0">Mon</option><option value="1">Tue</option><option value="2">Wed</option><option value="3">Thu</option><option value="4">Fri</option></select></div>
+                <div style="flex:1"><label>Start</label><input id="evtStart" type="time" value="09:00"></div>
+                <div style="flex:1"><label>End</label><input id="evtEnd" type="time" value="10:00"></div>
+            </div>
+
+            <div class="field"><label>Color style</label><select id="evtStyle"><option value="c1">Purple</option><option value="c2">Green</option><option value="c3">Blue</option><option value="c4">Pink</option><option value="c5">Yellow</option></select></div>
+
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+                <button class="mini-btn" id="btnCancel">Cancel</button>
+                <button class="mini-btn" id="btnSave" style="background:var(--accent);color:white;border:none">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="backdrop" id="libBackdrop" aria-hidden="true">
+        <div class="modal" style="max-height:72vh;overflow:auto">
+            <h3>Library</h3>
+            <div style="display:flex;gap:8px;margin-bottom:8px"><input id="libName" placeholder="Snapshot name" style="flex:1;padding:8px;border-radius:8px;border:1px solid #eef2f7"><button class="mini-btn" style="background:var(--accent);color:white;border:none" onclick="saveSnapshot()">Save</button></div>
+            <div id="libList" style="display:flex;flex-direction:column;gap:8px"></div>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="mini-btn" onclick="closeLibrary()">Close</button></div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Navigation Functions ---
+        const appContainer = document.getElementById('app-container');
+
+        const pages = {
+            'logo': `
+                <div class="wavy-background">
+                    <div class="wave wave-bottom wave-1"></div>
+                    <div class="wave wave-bottom wave-2"></div>
+                    <div class="wave wave-bottom wave-3"></div>
+
+                    <div class="wave wave-top wave-top-1"></div>
+                    <div class="wave wave-top wave-top-2"></div>
+                    <div class="wave wave-top wave-top-3"></div>
+
+                    <div class="absolute inset-0 flex items-center justify-center p-8 z-10">
+                        <a href="javascript:void(0)" onclick="navigateTo('login')" class="flex flex-col items-center group transition-all duration-300 transform hover:-translate-y-1">
+                            <div class="logo-circle">
+                                <span class="font-cursive logo-text">
+                                    E<span class="text-yellow-300 t-adjust">T</span>
+                                </span>
+                            </div>
+                            <p class="mt-4 text-4xl sm:text-5xl font-cursive text-gray-800 tracking-wider transition-colors duration-300 group-hover:text-blue-600">
+                                EduTrack
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            `,
+            'login': `
+                <div class="full-screen-container" style="background:#f4f4f4;">
+                    <form id="loginForm" class="login-form-style">
+                        <h2 style="margin:0 0 12px 0;font-weight:600;font-size:20px;">Login</h2>
+                        <input type="text" id="username_login" placeholder="Username" required class="form-input-style" />
+                        <input type="password" id="password_login" placeholder="Password" required class="form-input-style" />
+                        <label style="display:flex;align-items:center;font-size:14px;margin:10px 0;">
+                            <input type="checkbox" name="remember" style="margin-right:6px;"> Remember me
+                        </label>
+                        <button type="button" onclick="loginUser()" class="login-btn-style">Login</button>
+                        <button type="button" onclick="navigateTo('signup')" class="signup-btn-style" style="margin-top:8px;background:#28a745;">Sign Up</button>
+                        <a href="#" style="display:block;margin-top:12px;text-align:center;font-size:14px;color:#007bff;text-decoration:none;cursor:pointer;">Forgot Password?</a>
+                    </form>
+                </div>
+            `,
+            'signup': `
+                <div class="full-screen-container" style="background:#f4f4f4;">
+                    <form id="signupForm" class="signup-form-style">
+                        <h2 style="margin:0 0 12px 0; font-weight:600; font-size:20px;">Sign Up</h2>
+                        <input type="text" id="username_signup" name="username" placeholder="Username" required class="form-input-style" />
+                        <input type="password" id="password_signup" name="password" placeholder="Password" required class="form-input-style" />
+                        <button type="button" onclick="signUp()" class="signup-btn-style">Sign Up</button>
+                        <button type="button" onclick="navigateTo('login')" class="back-to-login-btn">Back to Login</button>
+                    </form>
+                </div>
+            `,
+            'system': `
+                <div class="app">
+                    <div class="left-toggle" aria-hidden="false">
+                        <div class="menu-btn" id="menuBtn" title="Menu" aria-expanded="false">☰</div>
+                        <div class="sidebar" id="sidebar" role="menu" aria-hidden="true">
+                            <header>
+                                <div class="avatar"><img id="userAvatar" src="https://placehold.co/44x44/cccccc/333333?text=U" alt="User Avatar"></div>
+                                <div><div id="sidebarUsername" style="font-weight:700">Guest User</div><div style="font-size:13px;color:var(--muted)">User</div></div>
+                            </header>
+                            <div class="item" data-action="account"><strong>Account</strong><div style="font-size:13px;color:var(--muted)">Profile & info</div></div>
+                            <div class="item" data-action="settings"><strong>Settings</strong><div style="font-size:13px;color:var(--muted)">Preferences</div></div>
+                            <div class="item" data-action="library" onclick="openLibrary()"><strong>Library</strong><div style="font-size:13px;color:var(--muted)">Saved schedules</div></div>
+                            <div class="item" data-action="help"><strong>How to use</strong><div style="font-size:13px;color:var(--muted)">Quick guide</div></div>
+                        </div>
+                    </div>
+                    <div class="card" role="main" aria-label="Weekly schedule card">
+                        <div class="toolbar">
+                            <div class="toolbar-left"><div class="logo">ST</div><div><div class="title">Weekly Calendar</div><div style="font-size:13px;color:var(--muted)">Mon — Fri • 8:00 — 17:00</div></div></div>
+                            <div class="toolbar-right">
+                                <div class="new-schedule-btn" title="Create New Schedule" onclick="startNewSchedule()">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    New Schedule
+                                </div>
+                                <div class="mini-btn" title="Today" onclick="goToday()">Today</div>
+                                <div class="mini-btn" title="Exit to Logo/Logout" onclick="navigateTo('logo')">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff5c5c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <div class="export-btn" id="exportBtn" title="Export" onclick="toggleExportMenu()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="transform:translateY(-1px)"><path d="M12 3v12" stroke="#6b4eff" stroke-width="1.6" stroke-linecap="round"/><path d="M8 9l4 4 4-4" stroke="#6b4eff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 21H3" stroke="#c9c9d9" stroke-width="1.4" stroke-linecap="round"/></svg><div style="margin-left:8px;font-weight:700;color:#4a357f">Export</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="export-menu" id="exportMenu">
+                            <button onclick="exportPDF()">📄 Download PDF</button>
+                            <button onclick="saveFile()">💾 Download JSON</button>
+                            <button onclick="shareLink()">🔗 Copy Link</button>
+                            <button onclick="window.print()">🖨️ Print</button>
+                        </div>
+                        <div class="week-header" id="weekHeader">
+                            <div class="day">Mon</div><div class="day">Tue</div><div class="day">Wed</div><div class="day">Thu</div><div class="day">Fri</div>
+                        </div>
+                        <div class="grid-wrap">
+                            <div class="time-col" id="timeCol" aria-hidden="true"></div>
+                            <div class="grid" id="grid" role="grid" aria-rowcount="10" aria-colcount="5"></div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        function navigateTo(pageName) {
+            appContainer.innerHTML = pages[pageName];
+            if (pageName === 'system') {
+                // Re-run initialization logic for the calendar/system view
+                initializeSystemView();
+            } else {
+                // Clean up drag listeners when leaving the system view
+                cleanupSystemListeners();
+            }
+            // Ensure the body style is correct for the current page
+            if (pageName === 'logo') {
+                document.body.className = 'wavy-background';
+                document.body.style.display = 'block'; // Or whatever logo needs
+            } else if (pageName === 'login' || pageName === 'signup') {
+                document.body.className = '';
+                document.body.style.cssText = 'font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#f4f4f4; margin:0;';
+            } else {
+                document.body.className = '';
+                document.body.style.cssText = '';
+            }
+        }
+
+        // --- Auth Functions ---
+        function signUp() {
+            const username = document.getElementById('username_signup').value.trim();
+            const password = document.getElementById('password_signup').value.trim();
+
+            if (!username || !password) {
+                customAlert("Please fill in all fields.");
+                return;
+            }
+
+            // Store credentials for future login validation
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            
+            // Store the current user data (for immediate use after sign-up/login)
+            const userData = { username: username, password: password };
+            localStorage.setItem("currentUser", JSON.stringify(userData));
+
+            customAlert("Sign-up successful! Redirecting to login page...");
+            navigateTo('login');
+        }
+
+        function loginUser() {
+            const username = document.getElementById("username_login").value.trim();
+            const password = document.getElementById("password_login").value.trim();
+
+            const savedUser = localStorage.getItem("username");
+            const savedPass = localStorage.getItem("password");
+
+            if (username === savedUser && password === savedPass && savedUser) {
+                // Store the current user data for system view display
+                const userData = { username: username, password: password };
+                localStorage.setItem("currentUser", JSON.stringify(userData));
+
+                customAlert("Login successful! Welcome to EduTrack...");
+                navigateTo("system");
+            } else if (!savedUser) {
+                customAlert("No user found. Please sign up first.");
+            } else {
+                customAlert("Incorrect username or password. Please try again.");
+            }
+        }
+
+        // --- System Function (Calendar) Logic ---
+        let events = JSON.parse(localStorage.getItem('week_events') || '[]');
+        let editingId = null;
+        const startHour = 8,
+            endHour = 18;
+        const hours = [];
+        for (let h = startHour; h < endHour; h++) hours.push(h);
+
+        let dragMoveListener = null;
+        let dragUpListener = null;
+
+        function initializeSystemView() {
+            // Wait for the DOM elements to be created before accessing them
+            setTimeout(() => {
+                renderTimeCol();
+                renderGrid();
+
+                // NEW: Load current user data and update sidebar
+                const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                if (user) {
+                    const sidebarUsername = document.getElementById('sidebarUsername');
+                    const userAvatar = document.getElementById('userAvatar');
+                    if (sidebarUsername) {
+                        sidebarUsername.textContent = user.username;
+                    }
+                    if (userAvatar) {
+                        // Update avatar text to first letter of username
+                        userAvatar.src = `https://placehold.co/44x44/cccccc/333333?text=${user.username.charAt(0).toUpperCase()}`;
+                    }
+                }
+
+                if (!events || events.length === 0) {
+                    events = [{
+                        id: uuid(),
+                        title: 'Finalize Mockups',
+                        day: 1,
+                        start: '11:00',
+                        end: '15:00',
+                        style: 'c1'
+                    }, {
+                        id: uuid(),
+                        title: 'Team meeting',
+                        day: 2,
+                        start: '10:00',
+                        end: '11:00',
+                        style: 'c3'
+                    }, {
+                        id: uuid(),
+                        title: 'Gym',
+                        day: 3,
+                        start: '08:00',
+                        end: '09:00',
+                        style: 'c2'
+                    }, {
+                        id: uuid(),
+                        title: 'Prep for Presentation',
+                        day: 4,
+                        start: '08:00',
+                        end: '10:00',
+                        style: 'c4'
+                    }];
+                    saveEvents();
+                } else {
+                    renderEvents();
+                }
+
+                // Re-add event listeners for dynamic elements that get recreated
+                const menuBtn = document.getElementById('menuBtn');
+                const sidebar = document.getElementById('sidebar');
+                if (menuBtn) {
+                    menuBtn.addEventListener('click', () => {
+                        const v = sidebar.classList.toggle('visible');
+                        menuBtn.setAttribute('aria-expanded', String(v));
+                        sidebar.setAttribute('aria-hidden', String(!v));
+                    });
+                }
+                if (sidebar) {
+                    sidebar.addEventListener('click', (e) => {
+                        const action = e.target.closest('.item')?.dataset?.action;
+                        if (!action) return;
+                        
+                        // NEW: Update account information display
+                        if (action === 'account') {
+                            const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                            const username = user ? user.username : 'N/A';
+                            const password = user ? user.password : 'N/A';
+                            customAlert(`Account Details:\n\nUsername: ${username}\nPassword: ${password}\nStatus: Member`);
+                        }
+                        else if (action === 'settings') customAlert('Settings: Demo');
+                        else if (action === 'library') openLibrary(); // Ensure library opens
+                        else if (action === 'help') customAlert('How to use:\n- Click a slot to add a new event.\n- Drag an event to move it between times/days.\n- Drag top/bottom handles to resize.\n- Double-click to edit.\n- Right-click to delete.');
+                    });
+                }
+                
+                // Note: Modal listeners for btnCancel/btnSave/backdrops are attached once on DOMContentLoaded.
+            }, 0);
+        }
+
+        function handleAlertBackdropClick(e) {
+            if (e.target === document.getElementById('alertModalBackdrop')) {
+                const alertBtnCancel = document.getElementById('alertBtnCancel');
+                const alertBtnConfirm = document.getElementById('alertBtnConfirm');
+                if (alertBtnCancel.style.display === 'inline-block') {
+                    alertBtnCancel.click();
+                } else {
+                    alertBtnConfirm.click();
+                }
+            }
+        }
+
+        function handleModalBackdropClick(e) {
+            if (e.target === document.getElementById('modalBackdrop')) closeModal();
+        }
+
+        function handleGlobalClicks(e) {
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const exportBtn = document.getElementById('exportBtn');
+            const exportMenu = document.getElementById('exportMenu');
+
+            if (exportBtn && exportMenu && !exportBtn.contains(e.target) && !exportMenu.contains(e.target)) {
+                exportMenu.classList.remove('visible');
+            }
+            if (menuBtn && sidebar && e.target !== menuBtn && !sidebar.contains(e.target) && e.target.closest('.left-toggle') !== menuBtn) {
+                sidebar.classList.remove('visible');
+            }
+        }
+
+        function cleanupSystemListeners() {
+            // Remove drag listeners when leaving the system view
+            window.removeEventListener('mousemove', dragMoveListener);
+            window.removeEventListener('mouseup', dragUpListener);
+        }
+
+        function saveModalEvent() {
+            const title = document.getElementById('evtTitle').value.trim() || 'Untitled';
+            const day = parseInt(document.getElementById('evtDay').value);
+            const start = document.getElementById('evtStart').value;
+            const end = document.getElementById('evtEnd').value;
+            const style = document.getElementById('evtStyle').value;
+
+            if (!start || !end || start >= end) {
+                customAlert('Please provide valid times (end after start).');
+                return;
+            }
+
+            const startHourNum = parseInt(start.split(':')[0]);
+            const endHourNum = parseInt(end.split(':')[0]);
+
+            if (startHourNum < startHour || endHourNum > endHour || (endHourNum === endHour && end.split(':')[1] > '00')) {
+                customAlert(`Events must be scheduled between ${String(startHour).padStart(2,'0')}:00 and ${String(endHour).padStart(2,'0')}:00.`);
+                return;
+            }
+
+            if (editingId) {
+                const idx = events.findIndex(x => x.id === editingId);
+                if (idx >= 0) {
+                    events[idx] = { ...events[idx],
+                        title,
+                        day,
+                        start,
+                        end,
+                        style
+                    };
+                }
+            } else {
+                events.push({
+                    id: uuid(),
+                    title,
+                    day,
+                    start,
+                    end,
+                    style
+                });
+            }
+            saveEvents();
+            closeModal();
+        }
+
+
+        let resolveModalPromise;
+        const alertModalBackdrop = document.getElementById('alertModalBackdrop');
+        const alertTitle = document.getElementById('alertTitle');
+        const alertMessage = document.getElementById('alertMessage');
+        const alertBtnConfirm = document.getElementById('alertBtnConfirm');
+        const alertBtnCancel = document.getElementById('alertBtnCancel');
+
+        function showModal(title, message, isConfirmation = false) {
+            return new Promise(resolve => {
+                resolveModalPromise = resolve;
+                alertTitle.textContent = title;
+                alertMessage.textContent = message;
+
+                alertBtnCancel.style.display = isConfirmation ? 'inline-block' : 'none';
+
+                alertBtnConfirm.onclick = () => {
+                    alertModalBackdrop.classList.remove('show');
+                    alertModalBackdrop.setAttribute('aria-hidden', 'true');
+                    resolve(true);
+                };
+
+                alertBtnCancel.onclick = () => {
+                    alertModalBackdrop.classList.remove('show');
+                    alertModalBackdrop.setAttribute('aria-hidden', 'true');
+                    resolve(false);
+                };
+
+                alertModalBackdrop.classList.add('show');
+                alertModalBackdrop.setAttribute('aria-hidden', 'false');
+            });
+        }
+
+        function customAlert(message) {
+            showModal('Notification', message);
+        }
+
+        async function customConfirm(message) {
+            return await showModal('Confirmation', message, true);
+        }
+
+        function renderTimeCol() {
+            const timeCol = document.getElementById('timeCol');
+            if (!timeCol) return;
+            timeCol.innerHTML = '';
+            hours.forEach(h => {
+                const el = document.createElement('div');
+                el.className = 'time-cell';
+                el.textContent = (h <= 12 ? h : h - 12) + (h < 12 ? ' am' : ' pm');
+                timeCol.appendChild(el);
+            });
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            for (let day = 0; day < 5; day++) {
+                const col = document.createElement('div');
+                col.style.position = 'relative';
+
+                const cellHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cell-height'));
+                col.style.minHeight = (hours.length * cellHeight) + 'px';
+                col.className = 'col';
+                hours.forEach(hr => {
+                    const slot = document.createElement('div');
+                    slot.className = 'slot';
+                    slot.dataset.day = day;
+                    slot.dataset.hour = hr;
+                    slot.addEventListener('click', ev => {
+                        editingId = null;
+                        document.getElementById('evtDay').value = day;
+                        document.getElementById('evtStart').value = String(hr).padStart(2, '0') + ':00';
+                        document.getElementById('evtEnd').value = String(hr + 1).padStart(2, '0') + ':00';
+                        openModal();
+                    });
+                    col.appendChild(slot);
+                });
+                grid.appendChild(col);
+            }
+        }
+
+        function timeToPct(start, end) {
+            const [sh, sm] = start.split(':').map(Number);
+            const [eh, em] = end.split(':').map(Number);
+            const total = (endHour - startHour) * 60;
+            const startM = (sh - startHour) * 60 + sm;
+            const dur = (eh - sh) * 60 + (em - sm);
+            const top = (startM / total) * 100;
+            const height = (dur / total) * 100;
+            return {
+                top,
+                height
+            };
+        }
+
+        function pctToTime(pctTop, pctHeight) {
+            const total = (endHour - startHour) * 60;
+
+            const startMin = Math.round((pctTop / 100) * total / 30) * 30;
+            const durMin = Math.max(30, Math.round((pctHeight / 100) * total / 30) * 30);
+
+            const totalStartMin = startMin + startHour * 60;
+            const sh = Math.floor(totalStartMin / 60);
+            const sm = totalStartMin % 60;
+
+            const totalEndMin = totalStartMin + durMin;
+            const eh = Math.floor(totalEndMin / 60);
+            const em = totalEndMin % 60;
+
+            const clampedEh = Math.min(eh, endHour);
+            const clampedEm = (eh > endHour) ? 0 : em;
+
+            return {
+                start: String(sh).padStart(2, '0') + ':' + String(sm).padStart(2, '0'),
+                end: String(clampedEh).padStart(2, '0') + ':' + String(clampedEm).padStart(2, '0')
+            };
+        }
+
+        function renderEvents() {
+            const grid = document.getElementById('grid');
+            if (!grid) return;
+            document.querySelectorAll('.event').forEach(n => n.remove());
+
+            events.forEach(ev => {
+                const col = grid.children[ev.day];
+                if (!col) return;
+
+                if (!ev.start || !ev.end || ev.start >= ev.end) return;
+
+                const node = document.createElement('div');
+                node.className = 'event ' + (ev.style || 'c1');
+                const p = timeToPct(ev.start, ev.end);
+
+                node.style.top = `calc(${p.top}% + 8px)`;
+                node.style.height = `calc(${p.height}% - 12px)`;
+
+                node.dataset.id = ev.id;
+                node.innerHTML = `
+                    <div class="handle top" title="Resize Top"></div>
+                    <div class="title">${escapeHtml(ev.title)}</div>
+                    <div class="time">${ev.start} — ${ev.end}</div>
+                    <div class="handle bottom" title="Resize Bottom"></div>
+                    `;
+
+                addDragAndResize(node, col, ev);
+                col.appendChild(node);
+            });
+        }
+
+        function addDragAndResize(node, col, ev) {
+            let isDragging = false,
+                isResizingTop = false,
+                isResizingBottom = false;
+            let startY = 0,
+                startTopPct = 0,
+                startHeightPct = 0,
+                colRect = null;
+
+            const topHandle = node.querySelector('.handle.top');
+            const bottomHandle = node.querySelector('.handle.bottom');
+
+            const getPct = (n) => {
+                const style = window.getComputedStyle(n);
+
+                const top = parseFloat(style.top.replace('px', '')) - 8;
+                const height = parseFloat(style.height.replace('px', '')) + 12;
+                return {
+                    top: (top / colRect.height) * 100,
+                    height: (height / colRect.height) * 100
+                };
+            }
+
+            const startDrag = (e, action) => {
+                e.stopPropagation();
+                e.preventDefault();
+                colRect = col.getBoundingClientRect();
+                startY = e.clientY;
+
+                const {
+                    top,
+                    height
+                } = getPct(node);
+                startTopPct = top;
+                startHeightPct = height;
+
+                if (action === 'top') isResizingTop = true;
+                else if (action === 'bottom') isResizingBottom = true;
+                else isDragging = true;
+
+                document.body.style.userSelect = 'none';
+                node.style.zIndex = 20;
+            }
+
+            topHandle.addEventListener('mousedown', (e) => startDrag(e, 'top'));
+            bottomHandle.addEventListener('mousedown', (e) => startDrag(e, 'bottom'));
+            node.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('handle')) return;
+                startDrag(e, 'drag');
+            });
+
+            dragMoveListener = function onMove(e) {
+                if (!(isDragging || isResizingTop || isResizingBottom)) return;
+                const dy = e.clientY - startY;
+                const deltaPct = (dy / colRect.height) * 100;
+
+                let newTop = startTopPct;
+                let newHeight = startHeightPct;
+
+                if (isDragging) {
+                    newTop = startTopPct + deltaPct;
+                } else if (isResizingTop) {
+                    newTop = startTopPct + deltaPct;
+                    newHeight = startHeightPct - deltaPct;
+                } else if (isResizingBottom) {
+                    newHeight = startHeightPct + deltaPct;
+                }
+
+                const snap = 100 / ((endHour - startHour) * 2);
+
+                if (isResizingTop || isDragging) {
+                    newTop = Math.max(0, newTop);
+                }
+                if (isResizingTop || isResizingBottom) {
+                    newHeight = Math.max(snap, newHeight);
+                }
+
+                if (newTop + newHeight > 100) {
+                    if (isDragging) {
+                        newTop = 100 - newHeight;
+                    } else if (isResizingBottom) {
+                        newHeight = 100 - newTop;
+                    }
+                }
+
+                newTop = Math.round(newTop / snap) * snap;
+                newHeight = Math.round(newHeight / snap) * snap;
+
+                if (newTop + newHeight > 100) {
+                    newTop = 100 - newHeight;
+                }
+
+                node.style.top = `calc(${newTop}% + 8px)`;
+                node.style.height = `calc(${newHeight}% - 12px)`;
+            }
+
+            dragUpListener = function onUp(e) {
+                if (isDragging || isResizingTop || isResizingBottom) {
+                    node.style.zIndex = '';
+
+
+                    const {
+                        top: finalTopPct,
+                        height: finalHeightPct
+                    } = getPct(node);
+
+                    const times = pctToTime(finalTopPct, finalHeightPct);
+
+                    const idx = events.findIndex(x => x.id === ev.id);
+                    if (idx >= 0) {
+                        events[idx].start = times.start;
+                        events[idx].end = times.end;
+                    }
+                    saveEvents();
+                }
+                isDragging = false;
+                isResizingTop = false;
+                isResizingBottom = false;
+                document.body.style.userSelect = '';
+            }
+
+            window.addEventListener('mousemove', dragMoveListener);
+            window.addEventListener('mouseup', dragUpListener);
+
+            node.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                editingId = ev.id;
+                document.getElementById('evtTitle').value = ev.title;
+                document.getElementById('evtDay').value = ev.day;
+                document.getElementById('evtStart').value = ev.start;
+                document.getElementById('evtEnd').value = ev.end;
+                document.getElementById('evtStyle').value = ev.style || 'c1';
+                openModal();
+            });
+
+            node.addEventListener('contextmenu', async (e) => {
+                e.preventDefault();
+                const confirmed = await customConfirm('Delete this event?');
+                if (confirmed) {
+                    events = events.filter(x => x.id !== ev.id);
+                    saveEvents();
+                }
+            });
+        }
+
+        function openModal() {
+            document.getElementById('modalBackdrop').classList.add('show');
+            document.getElementById('modalBackdrop').setAttribute('aria-hidden', 'false');
+            document.getElementById('evtTitle').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('modalBackdrop').classList.remove('show');
+            document.getElementById('modalBackdrop').setAttribute('aria-hidden', 'true');
+            editingId = null;
+            document.getElementById('evtTitle').value = '';
+            document.getElementById('evtStart').value = '09:00';
+            document.getElementById('evtEnd').value = '10:00';
+            document.getElementById('evtStyle').value = 'c1';
+        }
+
+        function saveEvents() {
+            localStorage.setItem('week_events', JSON.stringify(events));
+            renderEvents();
+        }
+
+        async function startNewSchedule() {
+            const confirmed = await customConfirm("Are you sure you want to start a new schedule? All current unsaved events will be lost.");
+            if (confirmed) {
+                events = [];
+                saveEvents();
+                customAlert("New, blank schedule created!");
+            }
+        }
+
+        function uuid() {
+            return 'id-' + Math.random().toString(36).slice(2, 9);
+        }
+
+        function escapeHtml(s) {
+            return String(s || '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[c]));
+        }
+
+        // Library functions
+        function openLibrary() {
+            document.getElementById('libBackdrop').classList.add('show');
+            document.getElementById('libBackdrop').setAttribute('aria-hidden', 'false');
+            renderLibrary();
+        }
+
+        function closeLibrary() {
+            document.getElementById('libBackdrop').classList.remove('show');
+            document.getElementById('libBackdrop').setAttribute('aria-hidden', 'true');
+        }
+
+        function saveSnapshot() {
+            const name = document.getElementById('libName').value.trim() || ('Snapshot ' + new Date().toLocaleString());
+            const lib = JSON.parse(localStorage.getItem('week_lib') || '[]');
+            lib.push({
+                id: uuid(),
+                name,
+                created: Date.now(),
+                events
+            });
+            localStorage.setItem('week_lib', JSON.stringify(lib));
+            document.getElementById('libName').value = '';
+            renderLibrary();
+            customAlert('Saved snapshot.');
+        }
+
+        function renderLibrary() {
+            const lib = JSON.parse(localStorage.getItem('week_lib') || '[]');
+            const container = document.getElementById('libList');
+            if (!container) return;
+            container.innerHTML = '';
+            if (lib.length === 0) {
+                container.innerHTML = '<div style="color:var(--muted); padding: 12px;">No snapshots yet</div>';
+                return;
+            }
+            lib.slice().reverse().forEach(item => {
+                const node = document.createElement('div');
+                node.style.display = 'flex';
+                node.style.justifyContent = 'space-between';
+                node.style.alignItems = 'center';
+                node.style.padding = '8px';
+                node.style.border = '1px solid #f3f4f8';
+                node.style.borderRadius = '8px';
+                node.innerHTML = `<div><div style="font-weight:700">${escapeHtml(item.name)}</div><div style="font-size:13px;color:var(--muted)">${new Date(item.created).toLocaleString()}</div></div><div style="display:flex;gap:8px"><button onclick='loadSnapshot("${item.id}")' class="mini-btn" style="background:#eef2f7">Load</button><button onclick='deleteSnapshot("${item.id}")' class="mini-btn" style="background:#f4f6fb">Del</button></div>`;
+                container.appendChild(node);
+            });
+        }
+        async function loadSnapshot(id) {
+            const lib = JSON.parse(localStorage.getItem('week_lib') || '[]');
+            const found = lib.find(x => x.id === id);
+            if (!found) return customAlert('Not found');
+            const confirmed = await customConfirm('Load snapshot? This will replace current events.');
+            if (!confirmed) return;
+            events = found.events || [];
+            saveEvents();
+            closeLibrary();
+            customAlert(`Snapshot "${found.name}" loaded.`);
+        }
+        async function deleteSnapshot(id) {
+            const confirmed = await customConfirm('Delete snapshot?');
+            if (!confirmed) return;
+            const lib = JSON.parse(localStorage.getItem('week_lib') || '[]');
+            const filtered = lib.filter(x => x.id !== id);
+            localStorage.setItem('week_lib', JSON.stringify(filtered));
+            renderLibrary();
+            customAlert("Snapshot deleted.");
+        }
+
+        // Export functions
+        function toggleExportMenu() {
+            const exportMenu = document.getElementById('exportMenu');
+            const sidebar = document.getElementById('sidebar');
+            if (!exportMenu || !sidebar) return;
+            exportMenu.classList.toggle('visible');
+            sidebar.classList.remove('visible');
+        }
+
+        async function exportPDF() {
+            const exportMenu = document.getElementById('exportMenu');
+            const sidebar = document.getElementById('sidebar');
+            if (exportMenu) exportMenu.classList.remove('visible');
+            if (sidebar) sidebar.classList.remove('visible');
+            const card = document.querySelector('.card');
+            if (!card) return customAlert("Calendar view not active.");
+
+            const canvas = await html2canvas(card, {
+                scale: 2,
+                useCORS: true
+            });
+            const img = canvas.toDataURL('image/png');
+            const pdf = new jspdf.jsPDF('l', 'mm', 'a4');
+            const pageWidth = pdf.internal.pageSize.getWidth(),
+                pageHeight = pdf.internal.pageSize.getHeight();
+            const imgProps = pdf.getImageProperties(img);
+            const imgWidth = pageWidth;
+            const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+            pdf.addImage(img, 'PNG', 0, (pageHeight - imgHeight) / 2, imgWidth, imgHeight);
+            pdf.save('weekly-schedule.pdf');
+            customAlert("PDF download started.");
+        }
+
+        function saveFile() {
+            const blob = new Blob([JSON.stringify(events, null, 2)], {
+                type: 'application/json'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'schedule.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            customAlert("Event data downloaded as schedule.json.");
+        }
+
+        function shareLink() {
+            const data = JSON.stringify(events);
+            navigator.clipboard?.writeText(data).then(() => customAlert('Event data copied to clipboard.')).catch(() => customAlert('Unable to copy. Use Save File.'));
+        }
+
+        function goToday() {
+            const gridWrap = document.querySelector('.grid-wrap');
+            if (gridWrap) {
+                // Scroll to the top (which represents the start hour, 8:00 AM)
+                gridWrap.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+            customAlert('View scrolled to the start of the week.');
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Static listeners for modals should be here to prevent duplication
+            document.getElementById('btnCancel').addEventListener('click', closeModal);
+            document.getElementById('btnSave').addEventListener('click', saveModalEvent);
+            document.getElementById('alertModalBackdrop').addEventListener('click', handleAlertBackdropClick);
+            document.getElementById('modalBackdrop').addEventListener('click', handleModalBackdropClick);
+            document.addEventListener('click', handleGlobalClicks);
+
+            // Start the application on the logo page
+            navigateTo('logo');
+        });
+    </script>
+</body>
+
+</html>
